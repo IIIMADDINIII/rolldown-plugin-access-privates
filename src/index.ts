@@ -1,4 +1,4 @@
-import { type GeneralHookFilter, type Plugin } from "rolldown";
+import { type HookFilter, type Plugin } from "rolldown";
 import { withMagicString } from "rolldown-string";
 import { Visitor, type ESTree, type VisitorObject } from "rolldown/utils";
 
@@ -25,7 +25,7 @@ export default function AccessPrivates({
 }: {
   /**
    * Whether to export all top-level variables, functions, and classes in the module. 
-   * Can be an array of "variable", "function", and "class", or a function that will be called with the module ID and AST node of each variable, function, or class declaration
+   * Can be an array of "variable", "function", and "class", or a function that will be called with the module ID and AST node of each variable, function, or class declaration.
    * @default true
    */
   exports?: ("variable" | "function" | "class")[] | boolean | ((id: string, astNode: ESTree.VariableDeclaration | ESTree.Function | ESTree.Class) => boolean) | undefined;
@@ -36,7 +36,8 @@ export default function AccessPrivates({
    */
   classMembers?: ("method" | "get" | "set" | "property")[] | boolean | ((id: string, astNode: ESTree.MethodDefinition | ESTree.PropertyDefinition) => boolean) | undefined;
   /**
-   * The suffix to use for the generated accessors. Defaults to "Private". For example, if you have a private field `#foo`, the plugin will generate `fooPrivate` getter and setter.
+   * The suffix to use for the generated accessors.
+   * For example, if you have a private field `#foo`, the plugin will generate `fooPrivate` getter and setter.
    * @default "Private"
    */
   suffix?: string | ((name: string) => string) | undefined;
@@ -46,7 +47,7 @@ export default function AccessPrivates({
    * The filter will be applied to the module ID.
    * @default /\.[jt]sx?$/
    */
-  idFilter?: GeneralHookFilter | undefined;
+  idFilter?: HookFilter["id"] | undefined;
 } = {}): Plugin {
   // Calculate which code path can be optimized.
   const canNotExport = exports === false || (Array.isArray(exports) && exports.length === 0);

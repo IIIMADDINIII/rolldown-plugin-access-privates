@@ -2,7 +2,7 @@
 //MISE description="Clean the project and build it using Typescript for CI"
 
 import { clean } from "./clean.ts";
-import { Ctx, pnpm, task } from "./common.ts";
+import { Ctx, pnpm, task, ts } from "./common.ts";
 
 export const buildCi = task("Build CI", async (ctx) => {
   await clean(ctx);
