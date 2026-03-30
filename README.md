@@ -174,9 +174,6 @@ export class Counter {
   get resetPrivate() {
     return this.#reset;
   }
-  set resetPrivate(value) {
-    this.#reset = value;
-  }
   inc() {
     this.#value++;
     globalCounter++;

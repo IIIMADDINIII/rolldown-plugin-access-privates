@@ -125,7 +125,6 @@ export default function AccessPrivates({
             switch (node.kind) {
               case "method":
                 code.appendRight(node.end, `\n${node.static ? "static " : ""}get ["${name}"]() {return this.#${node.key.name};}`);
-                code.appendRight(node.end, `\n${node.static ? "static " : ""}set ["${name}"](value) {this.#${node.key.name} = value;}`);
                 break;
               case "get":
                 code.appendRight(node.end, `\n${node.static ? "static " : ""}get ["${name}"]() {return this.#${node.key.name};}`);
