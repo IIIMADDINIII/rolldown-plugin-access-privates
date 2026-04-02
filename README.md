@@ -44,28 +44,14 @@ type options = {
    * declaration.
    * @default true
    */
-  exports?:
-    | ("variable" | "function" | "class")[]
-    | boolean
-    | ((
-      id: string,
-      astNode: ESTree.VariableDeclaration | ESTree.Function | ESTree.Class,
-    ) => boolean)
-    | undefined;
+  exports?: ("variable" | "function" | "class")[] | boolean | ((id: string, astNode: ESTree.VariableDeclaration | ESTree.Function | ESTree.Class) => boolean) | undefined;
   /**
    * Which class members to generate accessors for.
    * Can be an array of "method", "get", "set", and "property", or a function that will
    * be called with the module ID and AST node of each method or property definition.
    * @default true
    */
-  classMembers?:
-    | ("method" | "get" | "set" | "property")[]
-    | boolean
-    | ((
-      id: string,
-      astNode: ESTree.MethodDefinition | ESTree.PropertyDefinition,
-    ) => boolean)
-    | undefined;
+  classMembers?: ("method" | "get" | "set" | "property")[] | boolean | ((id: string, astNode: ESTree.MethodDefinition | ESTree.PropertyDefinition) => boolean) | undefined;
   /**
    * The suffix to use for the generated accessors.
    * For example, if you have a private field `#foo`, the plugin will generate
@@ -120,10 +106,14 @@ type options = {
  * }}
  * ```
  */
-type GeneralHookFilter = string | RegExp | (string | RegExp)[] | {
-  include?: string | RegExp | (string | RegExp)[];
-  exclude?: string | RegExp | (string | RegExp)[];
-};
+type GeneralHookFilter =
+  | string
+  | RegExp
+  | (string | RegExp)[]
+  | {
+      include?: string | RegExp | (string | RegExp)[];
+      exclude?: string | RegExp | (string | RegExp)[];
+    };
 ````
 
 ## Example

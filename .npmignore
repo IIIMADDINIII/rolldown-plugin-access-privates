@@ -6,4 +6,6 @@
 /.npmignore
 /mise.toml
 /pnpm-lock.yaml
+/rolldown-plugin-access-privates.code-workspace
 /tsconfig.json
+/vite.config.ts

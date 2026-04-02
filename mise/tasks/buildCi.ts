@@ -2,12 +2,13 @@
 //MISE description="Clean the project and build it using Typescript for CI"
 
 import { clean } from "./clean.ts";
-import { Ctx, pnpm, task, ts } from "./common.ts";
+import { Ctx, pnpm, task, vp } from "./common.ts";
 
 export const buildCi = task("Build CI", async (ctx) => {
   await clean(ctx);
   await pnpm.install(ctx, { frozenLockfile: true });
-  await ts.run(ctx);
+  await vp.check(ctx);
+  await vp.pack(ctx);
 });
 
 if (import.meta.main) {
