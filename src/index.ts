@@ -1,6 +1,7 @@
 import { type HookFilter, type Plugin } from "rolldown";
 import { withMagicString } from "rolldown-string";
-import { Visitor, type ESTree, type VisitorObject } from "rolldown/utils";
+import { Visitor, type ESTree, type ParserOptions, type VisitorObject } from "rolldown/utils";
+import type { Plugin as VitePlugin } from "vite-plus";
 
 /** Map exports types to their corresponding AST node types. */
 const exportsToType = {
@@ -86,7 +87,7 @@ export default function AccessPrivates({
     suffix = (name) => name + suffixString;
   }
   // Definition of the Plugin
-  return {
+  const plugin = {
     name: "rolldown-plugin-access-privates",
     transform: {
       // Filters to optimize the plugin by skipping modules that don't need to be transformed.
@@ -96,9 +97,9 @@ export default function AccessPrivates({
         ...(canNotExport ? { code: "#" } : {}),
       },
       // Function implementing the transformation logic.
-      handler: withMagicString(function (code, id, meta) {
+      handler: withMagicString(function (this: { parse(input: string, options?: ParserOptions | null): ESTree.Program }, code, id, meta?: { ssr?: boolean | undefined; ast?: ESTree.Program }) {
         // If ast is provided in meta, use it. Otherwise, parse the code with the appropriate language based on the file extension.
-        let ast = meta.ast !== undefined ? meta.ast : this.parse(code.original, { lang: id.endsWith(".tsx") ? "tsx" : id.endsWith(".ts") ? "ts" : id.endsWith(".jsx") ? "jsx" : "js" });
+        let ast = meta?.ast !== undefined ? meta.ast : this.parse(code.original, { lang: id.endsWith(".tsx") ? "tsx" : id.endsWith(".ts") ? "ts" : id.endsWith(".jsx") ? "jsx" : "js" });
         const visitors: VisitorObject = {};
         // only add the visitors needed.
         if (!canNotExport) {
@@ -144,5 +145,6 @@ export default function AccessPrivates({
         new Visitor(visitors).visit(ast);
       }),
     },
-  };
+  } satisfies VitePlugin;
+  return plugin as Plugin;
 }
