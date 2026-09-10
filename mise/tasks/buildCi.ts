@@ -1,8 +1,8 @@
-#!/usr/bin/env -S deno run --node-modules-dir=none --no-lock --allow-all
+#!/usr/bin/env -S deno run --allow-all
 //MISE description="Clean the project and build it using Typescript for CI"
 
+import { Ctx, pnpm, task, vp } from "@iiimaddiniii/task-utils";
 import { clean } from "./clean.ts";
-import { Ctx, pnpm, task, vp } from "./common.ts";
 
 export const buildCi = task("Build CI", async (ctx) => {
   await clean(ctx);
